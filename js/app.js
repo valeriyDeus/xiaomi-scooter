@@ -69,37 +69,10 @@
             }
             function changeImage(theme) {
                 changeThemeImages.forEach((imageBlock => {
-                    const picture = imageBlock.querySelector("picture");
-                    const source = picture.querySelector("source");
-                    const img = picture.querySelector("img");
-                    if (theme === "light") {
-                        if (imageBlock.classList.contains("hero__image")) {
-                            source.srcset = "img/hero/scooter-white@2x.png 2x";
-                            img.src = "img/hero/scooter-white.png";
-                        }
-                        if (imageBlock.classList.contains("mobile-app__image")) {
-                            source.srcset = "img/mobile-app/phone-light@2x.png 2x";
-                            img.src = "img/mobile-app/phone-light.png";
-                        }
-                        if (imageBlock.classList.contains("buy__image")) {
-                            source.srcset = "img/buy/01-light@2x.png 2x";
-                            img.src = "img/buy/01-light.png";
-                        }
-                    }
-                    if (theme === "dark") {
-                        if (imageBlock.classList.contains("hero__image")) {
-                            source.srcset = "img/hero/scooter-black@2x.png 2x";
-                            img.src = "img/hero/scooter-black.png";
-                        }
-                        if (imageBlock.classList.contains("mobile-app__image")) {
-                            source.srcset = "img/mobile-app/phone-dark@2x.png 2x";
-                            img.src = "img/mobile-app/phone-dark.png";
-                        }
-                        if (imageBlock.classList.contains("buy__image")) {
-                            source.srcset = "img/buy/01-black@2x.png 2x";
-                            img.src = "img/buy/01-black.png";
-                        }
-                    }
+                    const {srcLight, srcDark, title} = imageBlock.dataset;
+                    const sourceSrc = src => src ? src.replace(/(\.[^.]+)$/, "@2x$1") : src;
+                    const htmlTemplateImage = `\n              <picture>\n                <source srcset="${theme === "dark" ? sourceSrc(srcLight) : sourceSrc(srcDark)} 2x">\n                <img src="${theme === "dark" ? srcLight : srcDark}" loading="lazy" alt="${title}">\n               </picture>\n             `;
+                    imageBlock.innerHTML = htmlTemplateImage;
                 }));
             }
             function changeTheme() {
